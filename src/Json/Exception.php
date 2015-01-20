@@ -10,7 +10,7 @@ defined('XAPP') || require_once(dirname(__FILE__) . '/../Core/core.php');
  * @class Xapp_Util_Json_Exception
  * @author Frank Mueller <set@cooki.me>
  */
-class Xapp_Util_Json_Exception extends ErrorException
+class Xapp_Util_Json_Exception extends Xapp_Exception
 {
     /**
      * error exception class constructor directs instance

@@ -9,7 +9,7 @@ defined('XAPP') || require_once(dirname(__FILE__) . '/../Core/core.php');
  * @class Xapp_Rpc_Exception
  * @author Frank Mueller <set@cooki.me>
  */
-class Xapp_Util_Exception_Storage extends ErrorException
+class Xapp_Util_Exception_Storage extends Xapp_Exception
 {
     /**
      * error exception class constructor directs instance

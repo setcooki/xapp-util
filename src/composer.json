@@ -18,7 +18,7 @@
     "repositories": [{
         "packagist": false,
         "type": "composer",
-        "url": "http://www.xapp-php.com/packages/packages.json"
+        "url": "http://www.pearls-media.com/packages/packages.json"
     }],
     "autoload": {
         "psr-0": {
