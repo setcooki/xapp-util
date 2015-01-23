@@ -1,6 +1,6 @@
 <?php
 
-defined('XAPP') || require_once(dirname(__FILE__) . '/../Core/core.php');
+defined('XAPP') || require_once(dirname(__FILE__) . '/../../../core/core.php');
 
 /**
  * Std exception class

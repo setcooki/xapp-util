@@ -1,6 +1,6 @@
 <?php
 
-defined('XAPP') || require_once(dirname(__FILE__) . '/../Core/core.php');
+defined('XAPP') || require_once(dirname(__FILE__) . '/../../../core/core.php');
 
 xapp_import('xapp.Util.Json.Exception');
 xapp_import('xapp.Util.Json.Query');
