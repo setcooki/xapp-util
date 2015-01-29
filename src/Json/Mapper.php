@@ -818,7 +818,7 @@ class Xapp_Util_Json_Mapper
                     {
                         if(($map = file_get_contents($file = $map)) === false)
                         {
-                            throw new Xapp_Util_Json_Exception(xapp_sprintf(_("unable to map object from file: %s"), $file), 1721502);
+                            throw new Xapp_Util_Json_Exception(xapp_sprintf(_("unable to load mapping object from file: %s"), $file), 1721502);
                         }
                     }
                     if(Xapp_Util_Json::isJson($map))
@@ -1476,6 +1476,28 @@ class Xapp_Util_Json_Mapper
         }else{
             return true;
         }
+    }
+
+
+    /**
+     * text a value if it contains a mappable placeholder defined by class option PLACEHOLDER_REGEX and return boolean
+     * true if so. NOTE: can only test for string values
+     *
+     * @error 17230
+     * @param mixed $value expects value to test
+     * @return bool
+     */
+    public function hasPlaceholder($value)
+    {
+        if(!is_array($value) && !is_object($value))
+        {
+            $regex = xapp_regex_delimit(xapp_get_option(self::PLACEHOLDER_REGEX, $this));
+            if(preg_match("=^".trim($regex, ' ^$')."$=is", $value))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
 
