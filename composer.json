@@ -1,5 +1,5 @@
 {
-    "name": "xapp/Util",
+    "name": "xapp/util",
     "type": "xapp-module",
     "keywords": ["xapp", "util"],
     "homepage": "http://xapp-php.com",
@@ -13,12 +13,13 @@
     },
     "require": {
         "php": ">=5.2.6",
-        "xapp/Core": "1.0.x-dev"
+        "xapp/core": "master"
     },
     "repositories": [{
-        "packagist": false,
-        "type": "composer",
-        "url": "http://www.pearls-media.com/packages/packages.json"
+        "url": "https://github.com/setcooki/xapp-core",
+        "type": "vcs",
+        "version":"master",
+        "packagist": false
     }],
     "autoload": {
         "psr-0": {
