@@ -15,12 +15,6 @@
         "php": ">=5.2.6",
         "xapp/core": "master"
     },
-    "repositories": [{
-        "url": "https://github.com/setcooki/xapp-core",
-        "type": "vcs",
-        "version":"master",
-        "packagist": false
-    }],
     "autoload": {
         "psr-0": {
             "Xapp_Rpc": "../.."
