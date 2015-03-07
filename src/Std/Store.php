@@ -167,7 +167,7 @@ class Xapp_Util_Std_Store
      */
     public $options = array
     (
-        self::ENCRYPTION_CIPHER     => MCRYPT_RIJNDAEL_256,
+        self::ENCRYPTION_CIPHER     => 'rijndael-256',
         self::ENCRYPTION_ALGO       => 'md5',
         self::ENCRYPTION_MODE       => 'cbc'
     );
