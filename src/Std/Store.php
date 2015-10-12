@@ -1180,7 +1180,7 @@ class Xapp_Util_Std_Store
      * be used to define a default return value when !== null will return the default value instead of throwing exception
      * thrown from Xapp_Util_Std_Store::crypt method. use default value, e.g. false is recommended, if encryption is used
      * outside if json store context. the cipher in fourth argument must be a php´s mycrypt valid value that usually comes
-     * from using php MCRYPT_ constants.nthe fifth parameter algorithm must be a valid string value that passes php´s
+     * from using php MCRYPT_ constants. the fifth parameter algorithm must be a valid string value that passes php´s
      * hash_algos() function. the sixth argument mode defines the cipher mode which must be valid against php´s
      * mcrypt_list_modes(). see Xapp_Util_Std_Store::crypt for more info since all logic is handled in this method
      *
@@ -1270,58 +1270,68 @@ class Xapp_Util_Std_Store
      */
     protected static function crypt($object, $key, $cipher = null, $algo = null, $mode = null, $encrypt = true)
     {
-        if($cipher === null)
+        if(function_exists('mcrypt_encrypt'))
         {
-            $cipher = MCRYPT_RIJNDAEL_256;
-        }else{
-            $cipher = strtolower(trim((string)$cipher));
-        }
-        if($algo === null)
-        {
-            $algo = 'md5';
-        }else{
-            $algo = strtolower(trim((string)$algo));
-        }
-        if($mode === null)
-        {
-            $mode = MCRYPT_MODE_CBC;
-        }else{
-            $mode = strtolower(trim((string)$mode));
-        }
-        if(mcrypt_get_cipher_name($cipher) === false)
-        {
-            throw new Xapp_Util_Std_Exception(xapp_sprintf(_("cipher: %s is not supported"), $cipher), 1704606);
-        }
-        if(!in_array($algo, hash_algos()))
-        {
-            throw new Xapp_Util_Std_Exception(xapp_sprintf(_("algo: %s is not supported"), $algo), 1704605);
-        }
-        if(!in_array($mode, mcrypt_list_modes()))
-        {
-            throw new Xapp_Util_Std_Exception(xapp_sprintf(_("mode: %s is not supported"), $mode), 1704604);
-        }
-        if((bool)$encrypt)
-        {
-            $object = mcrypt_encrypt($cipher, hash($algo, $key, false), serialize($object), $mode, hash($algo, hash($algo, $key, false), false));
-            if($object !== false)
+            if($cipher === null)
             {
-                return base64_encode($object);
+                $cipher = MCRYPT_RIJNDAEL_256;
             }else{
-                throw new Xapp_Util_Std_Exception(_("unable to encrypt object due to invalid parameters"), 1704603);
+                $cipher = strtolower(trim((string)$cipher));
             }
-        }else{
-            $object = mcrypt_decrypt($cipher, hash($algo, $key, false), base64_decode($object), $mode, hash($algo, hash($algo, $key, false), false));
-            if($object !== false)
+            if($algo === null)
             {
-                $object = rtrim($object, "\0");
-                if(self::serialized($object))
+                $algo = 'md5';
+            }else{
+                $algo = strtolower(trim((string)$algo));
+            }
+            if($mode === null)
+            {
+                $mode = MCRYPT_MODE_CBC;
+            }else{
+                $mode = strtolower(trim((string)$mode));
+            }
+            if(mcrypt_get_cipher_name($cipher) === false)
+            {
+                throw new Xapp_Util_Std_Exception(xapp_sprintf(_("cipher: %s is not supported"), $cipher), 1704606);
+            }
+            if(!in_array($algo, hash_algos()))
+            {
+                throw new Xapp_Util_Std_Exception(xapp_sprintf(_("algo: %s is not supported"), $algo), 1704605);
+            }
+            if(!in_array($mode, mcrypt_list_modes()))
+            {
+                throw new Xapp_Util_Std_Exception(xapp_sprintf(_("mode: %s is not supported"), $mode), 1704604);
+            }
+            if((bool)$encrypt)
+            {
+                $object = mcrypt_encrypt($cipher, hash($algo, $key, false), serialize($object), $mode, hash($algo, hash($algo, $key, false), false));
+                if($object !== false)
                 {
-                    return unserialize($object);
+                    return base64_encode($object);
                 }else{
-                    throw new Xapp_Util_Std_Exception(_("unable to decrypt object with key"), 1704602);
+                    throw new Xapp_Util_Std_Exception(_("unable to encrypt object due to invalid parameters"), 1704603);
                 }
             }else{
-                throw new Xapp_Util_Std_Exception(_("unable to decrypt object due to invalid parameters"), 1704601);
+                $object = mcrypt_decrypt($cipher, hash($algo, $key, false), base64_decode($object), $mode, hash($algo, hash($algo, $key, false), false));
+                if($object !== false)
+                {
+                    $object = rtrim($object, "\0");
+                    if(self::serialized($object))
+                    {
+                        return unserialize($object);
+                    }else{
+                        throw new Xapp_Util_Std_Exception(_("unable to decrypt object with key"), 1704602);
+                    }
+                }else{
+                    throw new Xapp_Util_Std_Exception(_("unable to decrypt object due to invalid parameters"), 1704601);
+                }
+            }
+        }else{
+            if((bool)$encrypt)
+            {
+                return base64_encode(serialize($object));
+            }else{
+                return unserialize(base64_decode($object));
             }
         }
     }
