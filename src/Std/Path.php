@@ -284,7 +284,6 @@ class Xapp_Util_Std_Path
 
         $path = rawurldecode(trim((string)$path));
         $paths = preg_split('=\s+(\+|\?|\>|\&|\||\*)\s+=is', $path, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
-
         for($i = 0; $i < sizeof($paths); $i += 2)
         {
             $path = trim($paths[$i]);
@@ -300,7 +299,9 @@ class Xapp_Util_Std_Path
                 //perform the query
                 if($this->execute($result, $path))
                 {
-                    if(($result = &$this->connect($result, $connector, $last, $return)) === true)
+                    //get result and return action
+                    $result = &$this->connect($result, $connector, $last, $return);
+                    if($return === true)
                     {
                         return $result;
                     }
@@ -310,6 +311,7 @@ class Xapp_Util_Std_Path
             {
                 $result = false;
             }
+            $return = false;
         }
         if($result !== false)
         {
