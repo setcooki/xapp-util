@@ -268,12 +268,12 @@ class Xapp_Util_Std_Path
      *
      * @error 17104
      * @param string $path expects the query path
-     * @param bool|mixed $default expects optional default return value
+     * @param bool|mixed $default expects optional default return value which default to null throwing exception or boolean false
      * @return mixed
      * @throws Exception
      * @throws Xapp_Result_Exception
      */
-    public function &query($path, $default = false)
+    public function &query($path, $default = null)
     {
         $e = null;
         $last = false;
@@ -317,7 +317,7 @@ class Xapp_Util_Std_Path
         {
             return $result;
         }else{
-            if($default !== false)
+            if(!is_null($default))
             {
                 return xapp_default($default);
             }else{
@@ -339,11 +339,11 @@ class Xapp_Util_Std_Path
      * @see Xapp_Util_Std_Path::query
      * @param array|object|Xapp_Util_Std_Store|Xapp_Util_Std_Query $object
      * @param string $path expects the query path
-     * @param bool|mixed $default expects optional default return value
+     * @param null|mixed $default expects optional default return value
      * @param null|mixed $options expects optional options
      * @return mixed
      */
-    public static function &q(&$object, $path, $default = false, $options = null)
+    public static function &q(&$object, $path, $default = null, $options = null)
     {
         return self::create($object, $options)->query($path, $default);
     }
