@@ -319,7 +319,8 @@ class Xapp_Util_Std_Path
         }else{
             if(!is_null($default))
             {
-                return xapp_default($default);
+                $default = xapp_default($default);
+                return $default;
             }else{
                 if(($e !== null && $e instanceof Exception) && stripos($path, 'false') === false)
                 {
