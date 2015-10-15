@@ -54,7 +54,8 @@ xapp_import('xapp.Util.Json');
  *
  * please refer to internal actions in the Xapp_Util_Json_Mapper::action method. if you use custom action registered
  * with the mapper instance you will access the custom action also like "@youraction()". actions can be used together with
- * path query syntax e.g. for conditional queries like, e.g. "${ns1:/path ? @remove(1)}"
+ * path query syntax e.g. for conditional queries like, e.g. "${ns1:/path ? @remove(1)}". see Xapp_Util_Json_Mapper::action
+ * for all actions and descriptions
  *
  * 4) special action for mapping from source to source
  * <code>${@:/path/to/internal/key}</code>
@@ -191,7 +192,8 @@ class Xapp_Util_Json_Mapper
         'glue',
         'implode',
         'query',
-        'map'
+        'map',
+        'cast'
     );
 
     /**
@@ -1333,6 +1335,32 @@ class Xapp_Util_Json_Mapper
                         $value = trim(implode((string)$params[0], $tmp));
                     }else{
                         $value = trim(implode('', $tmp));
+                    }
+                }
+                break;
+            /**
+             * ${@cast('int',ns0:/store/book/0/id)}
+             * ${@cast('int','default',ns0:/store/book/0/id)}
+             * cast value to data type passing data type compatible for php´s settype function in first argument and optional
+             * second argument default return value if path in second or third argument does not resolve
+             */
+            case ($action === 'cast')
+            :
+                if($params !== null && sizeof($params) >= 2)
+                {
+                    $default = null;
+                    $type = strtolower(trim((string)$params[0]));
+                    if(array_key_exists(2, $params)){
+                        $default = trim((string)$params[1]);
+                        $path = trim((string)$params[2]);
+                    }else{
+                        $path = trim((string)$params[1]);
+                    }
+                    if(($value = $this->path->query($this->normalize($path), '__FALSE__')) !== '__FALSE__')
+                    {
+                        settype($value, $type);
+                    }else{
+                        $value = Xapp_Util_Json_Query::typify($default);
                     }
                 }
                 break;
