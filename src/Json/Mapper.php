@@ -1340,27 +1340,21 @@ class Xapp_Util_Json_Mapper
                 break;
             /**
              * ${@cast('int',ns0:/store/book/0/id)}
-             * ${@cast('int','default',ns0:/store/book/0/id)}
-             * cast value to data type passing data type compatible for php´s settype function in first argument and optional
-             * second argument default return value if path in second or third argument does not resolve
+             * ${@cast('int',ns0:/store/book/0/id, 'default')}
+             * cast value to data type passing data type compatible for php´s settype function in first argument and path
+             * in second argument. optional default value in third argument
              */
             case ($action === 'cast')
             :
                 if($params !== null && sizeof($params) >= 2)
                 {
-                    $default = null;
                     $type = strtolower(trim((string)$params[0]));
-                    if(array_key_exists(2, $params)){
-                        $default = trim((string)$params[1]);
-                        $path = trim((string)$params[2]);
-                    }else{
-                        $path = trim((string)$params[1]);
-                    }
+                    $path = trim((string)$params[1]);
                     if(($value = $this->path->query($this->normalize($path), '__FALSE__')) !== '__FALSE__')
                     {
-                        settype($value, $type);
+                          settype($value, $type);
                     }else{
-                        $value = Xapp_Util_Json_Query::typify($default);
+                          $value = Xapp_Util_Json_Query::typify(((array_key_exists(2, $params)) ? $params[2] : null));
                     }
                 }
                 break;
