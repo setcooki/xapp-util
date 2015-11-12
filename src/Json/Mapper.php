@@ -1173,7 +1173,7 @@ class Xapp_Util_Json_Mapper
                             $value = $this->invoke($params[0], array($path, &$this));
                         }
                     }else{
-                        throw new Xapp_Util_Json_Exception(xapp_sprintf(_("action: call and callback: %2 is not a registered or valid callback"), $params[0]), 1722201);
+                        throw new Xapp_Util_Json_Exception(xapp_sprintf(_("action: call and callback: %s is not a registered or valid callback"), $params[0]), 1722201);
                     }
                 }
                 break;
