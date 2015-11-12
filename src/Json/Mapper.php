@@ -958,7 +958,7 @@ class Xapp_Util_Json_Mapper
             $value = preg_replace_callback("=$regex=is", array($this, 'query'), $value);
         }
         //execute internal actions if found
-        if((!is_object($value) && !is_array($value)) && stripos($value, '@') !== false)
+        if((!is_object($value) && !is_array($value)) && stripos($value, '@') !== false && !filter_var($value, FILTER_VALIDATE_EMAIL))
         {
             //shorthand path @: to get value from mapping object itself
             if(preg_match('=\@\:(\/?(?:[^\/]+))+=is', $value, $m))
