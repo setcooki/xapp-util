@@ -48,9 +48,9 @@ xapp_import('xapp.Util.Json');
  * <code>${@concat(',', ns0:/store/book/0/author, ns0:/store/book/1/author)}</code>
  *
  * to use actions use the basic action syntax "@action()". an action must always begin with "@" and must enclose the
- * path query or parameters in "()" enclosure.
+ * path query or parameters in "()" enclosure. a simple action like "@trim()" can not be "@trim" only!
  *
- * NOTE: actions can not be stacked! there can only be one single action! "@action1;action2()" is not a valid syntax!
+ * NOTE: actions can not be stacked! there can only be one single action! "@action1();action2()" is not a valid syntax!
  *
  * please refer to internal actions in the Xapp_Util_Json_Mapper::action method. if you use custom action registered
  * with the mapper instance you will access the custom action also like "@youraction()". actions can be used together with
@@ -965,7 +965,7 @@ class Xapp_Util_Json_Mapper
             {
                 $this->action('map', array($m[1]), $value, $path);
             //action mapping for syntax @map(*)
-            }else if(preg_match('=(?:\@([a-z\_]+)(?:\(([^\)]*)\))?)=is', $value, $m)){
+            }else if(preg_match('=(?:\@([a-z\_]+)\((?:([^\)]*))?\))=is', $value, $m)){
                 $m[1] = trim($m[1]);
                 if(isset($m[2]) && $m[2] !== '')
                 {
