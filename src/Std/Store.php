@@ -55,8 +55,7 @@ class Xapp_Util_Std_Store
     const ENCRYPTION_KEY            = 'UTIL_STD_STORE_ENCRYPTION_KEY';
 
     /**
-     * defines the stores encryption cipher if encryption is used. the cipher must be a string value valid against php´s
-     * mcrypt_get_cipher_name() function and defaults to MCRYPT_RIJNDAEL_256 constant
+     * defines the stores encryption cipher if encryption is used. the cipher must be a valid openssl cipher
      *
      * @const ENCRYPTION_CIPHER
      */
@@ -70,13 +69,6 @@ class Xapp_Util_Std_Store
      */
     const ENCRYPTION_ALGO           = 'UTIL_STD_STORE_ENCRYPTION_ALGO';
 
-    /**
-     * defines the stores encryption cipher mode if encryption is used. the mode must be a string value valid against php´s
-     * mcrypt_list_modes function and defaults to cbc
-     *
-     * @const ENCRYPTION_MODE
-     */
-    const ENCRYPTION_MODE           = 'UTIL_STD_STORE_ENCRYPTION_MODE';
 
     /**
      * defines a custom encryption callback if encryption is used. the callback will receive the stores object, key and mode
@@ -1179,10 +1171,9 @@ class Xapp_Util_Std_Store
      * argument key is the encryption password which is expected to be a string or integer value. the third argument can
      * be used to define a default return value when !== null will return the default value instead of throwing exception
      * thrown from Xapp_Util_Std_Store::crypt method. use default value, e.g. false is recommended, if encryption is used
-     * outside if json store context. the cipher in fourth argument must be a php´s mycrypt valid value that usually comes
-     * from using php MCRYPT_ constants. the fifth parameter algorithm must be a valid string value that passes php´s
-     * hash_algos() function. the sixth argument mode defines the cipher mode which must be valid against php´s
-     * mcrypt_list_modes(). see Xapp_Util_Std_Store::crypt for more info since all logic is handled in this method
+     * outside if json store context. the cipher in fourth argument must be a php´s openssl valid value.
+     * the fifth parameter algorithm must be a valid string value that passes php´s hash_algos() function.
+     * see Xapp_Util_Std_Store::crypt for more info since all logic is handled in this method
      *
      * @error 17041
      * @see Xapp_Util_Std_Store::crypt
@@ -1191,16 +1182,15 @@ class Xapp_Util_Std_Store
      * @param mixed $default expects default return value which is not null
      * @param string $cipher expects the encryption cipher
      * @param string $algo expects the encryption algo
-     * @param string $mode expects the encryption cipher mode
      * @return string
      * @throws Exception
      * @throws Xapp_Util_Std_Exception
      */
-    public static function encrypt($object, $key, $default = null, $cipher = null, $algo = null, $mode = null)
+    public static function encrypt($object, $key, $default = null, $cipher = OPENSSL_CIPHER_AES_256_CBC, $algo = null)
     {
         try
         {
-            return self::crypt($object, $key, $cipher, $algo, $mode, true);
+            return self::crypt($object, $key, $cipher, $algo, true);
         }
         catch(Exception $e)
         {
@@ -1227,16 +1217,15 @@ class Xapp_Util_Std_Store
      * @param mixed $default expects default return value which is not null
      * @param string $cipher expects the encryption cipher
      * @param string $algo expects the encryption algo
-     * @param string $mode expects the encryption cipher mode
      * @return mixed
      * @throws Exception
      * @throws Xapp_Util_Std_Exception
      */
-    public static function decrypt($object, $key, $default = null, $cipher = null, $algo = null, $mode = null)
+    public static function decrypt($object, $key, $default = null, $cipher = OPENSSL_CIPHER_AES_256_CBC, $algo = null)
     {
         try
         {
-            return self::crypt($object, $key, $cipher, $algo, $mode, false);
+            return self::crypt($object, $key, $cipher, $algo, false);
         }
         catch(Exception $e)
         {
@@ -1261,50 +1250,29 @@ class Xapp_Util_Std_Store
      * @see Xapp_Util_Std_Store::encrypt
      * @param mixed $object expects object to encrypt
      * @param mixed $key expects the key/password
-     * @param string $cipher expects the encryption cipher
+     * @param string|int $cipher expects the encryption cipher
      * @param string $algo expects the encryption algo
-     * @param string $mode expects the encryption cipher mode
      * @param bool $encrypt expected boolean value to determine whether to encrypt or decrypt object
      * @return mixed
      * @throws Xapp_Util_Std_Exception
      */
-    protected static function crypt($object, $key, $cipher = null, $algo = null, $mode = null, $encrypt = true)
+    protected static function crypt($object, $key, $cipher = OPENSSL_CIPHER_AES_256_CBC, $algo = null, $encrypt = true)
     {
-        if(function_exists('mcrypt_encrypt'))
+        if(function_exists('openssl_encrypt'))
         {
-            if($cipher === null)
-            {
-                $cipher = MCRYPT_RIJNDAEL_256;
-            }else{
-                $cipher = strtolower(trim((string)$cipher));
-            }
             if($algo === null)
             {
                 $algo = 'md5';
             }else{
                 $algo = strtolower(trim((string)$algo));
             }
-            if($mode === null)
-            {
-                $mode = MCRYPT_MODE_CBC;
-            }else{
-                $mode = strtolower(trim((string)$mode));
-            }
-            if(mcrypt_get_cipher_name($cipher) === false)
-            {
-                throw new Xapp_Util_Std_Exception(xapp_sprintf(_("cipher: %s is not supported"), $cipher), 1704606);
-            }
             if(!in_array($algo, hash_algos()))
             {
                 throw new Xapp_Util_Std_Exception(xapp_sprintf(_("algo: %s is not supported"), $algo), 1704605);
             }
-            if(!in_array($mode, mcrypt_list_modes()))
-            {
-                throw new Xapp_Util_Std_Exception(xapp_sprintf(_("mode: %s is not supported"), $mode), 1704604);
-            }
             if((bool)$encrypt)
             {
-                $object = mcrypt_encrypt($cipher, hash($algo, $key, false), serialize($object), $mode, hash($algo, hash($algo, $key, false), false));
+                $object = openssl_encrypt(serialize($object), $cipher, hash($algo, $key, false), 0, hash($algo, hash($algo, $key, false)));
                 if($object !== false)
                 {
                     return base64_encode($object);
@@ -1312,7 +1280,7 @@ class Xapp_Util_Std_Store
                     throw new Xapp_Util_Std_Exception(_("unable to encrypt object due to invalid parameters"), 1704603);
                 }
             }else{
-                $object = mcrypt_decrypt($cipher, hash($algo, $key, false), base64_decode($object), $mode, hash($algo, hash($algo, $key, false), false));
+                $object = openssl_decrypt(base64_decode($object), $cipher, hash($algo, $key, false), 0, hash($algo, hash($algo, $key, false)));
                 if($object !== false)
                 {
                     $object = rtrim($object, "\0");
@@ -1440,7 +1408,7 @@ class Xapp_Util_Std_Store
             {
                 $object = call_user_func_array(xapp_get_option(self::ENCRYPTION_CALLBACK, $this), array($this->object, $key, 'encrypt'));
             }else{
-                $object = self::encrypt($this->object, $key, null, xapp_get_option(self::ENCRYPTION_CIPHER, $this), xapp_get_option(self::ENCRYPTION_ALGO, $this), xapp_get_option(self::ENCRYPTION_MODE, $this));
+                $object = self::encrypt($this->object, $key, null, xapp_get_option(self::ENCRYPTION_CIPHER, $this), xapp_get_option(self::ENCRYPTION_ALGO, $this));
             }
         }else{
             $object = (is_array($this->object) || is_object($this->object)) ? $class::encode($this->object) : $this->object;
@@ -1534,7 +1502,7 @@ class Xapp_Util_Std_Store
             {
                 $this->object = call_user_func_array(xapp_get_option(self::ENCRYPTION_CALLBACK, $this), array($this->object, $key, 'decrypt'));
             }else{
-                $this->object = self::decrypt($this->object, $key, null, xapp_get_option(self::ENCRYPTION_CIPHER, $this), xapp_get_option(self::ENCRYPTION_ALGO, $this), xapp_get_option(self::ENCRYPTION_MODE, $this));
+                $this->object = self::decrypt($this->object, $key, null, xapp_get_option(self::ENCRYPTION_CIPHER, $this), xapp_get_option(self::ENCRYPTION_ALGO, $this));
             }
         }
         return $this->object;
