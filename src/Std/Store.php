@@ -134,7 +134,6 @@ class Xapp_Util_Std_Store
         self::ENCRYPTION_KEY            => array(XAPP_TYPE_STRING, XAPP_TYPE_INT),
         self::ENCRYPTION_CIPHER         => XAPP_TYPE_STRING,
         self::ENCRYPTION_ALGO           => XAPP_TYPE_STRING,
-        self::ENCRYPTION_MODE           => XAPP_TYPE_STRING,
         self::ENCRYPTION_CALLBACK       => XAPP_TYPE_CALLABLE
     );
 
@@ -148,7 +147,6 @@ class Xapp_Util_Std_Store
         self::ENCRYPTION_KEY            => 0,
         self::ENCRYPTION_CIPHER         => 0,
         self::ENCRYPTION_ALGO           => 0,
-        self::ENCRYPTION_MODE           => 0,
         self::ENCRYPTION_CALLBACK       => 0
     );
 
@@ -161,7 +159,6 @@ class Xapp_Util_Std_Store
     (
         self::ENCRYPTION_CIPHER     => 'rijndael-256',
         self::ENCRYPTION_ALGO       => 'md5',
-        self::ENCRYPTION_MODE       => 'cbc'
     );
 
 
