@@ -3,7 +3,7 @@
     "type": "xapp-module",
     "keywords": ["xapp", "util"],
     "homepage": "https://github.com/setcooki/xapp-all",
-    "license": "GPL",
+    "license": "GPL-2.0-only",
     "support":{
         "issues": "http://agile.cooki.me",
         "wiki": "https://github.com/setcooki/xapp-all"
@@ -13,7 +13,7 @@
     },
     "require": {
         "php": ">=5.2.6",
-        "xapp/core": "master"
+        "xapp/core": "dev-master"
     },
     "autoload": {
         "psr-0": {
