@@ -62,14 +62,14 @@ class Xapp_Util_Storage extends Xapp_Util_Container
                     $this->_storage = rtrim($this->_storage, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . '.storage';
                     parent::__construct($input);
                 }else{
-                    throw new Xapp_Util_Exception_Storage(xapp_sprintf(_("storage directory: %s is not writable"), $this->_storage), 1640101);
+                    throw new Xapp_Util_Exception_Storage(xapp_sprintf(__("storage directory: %s is not writable"), $this->_storage), 1640101);
                 }
             }else{
                 if(file_exists($this->_storage))
                 {
                     if(!is_writeable($this->_storage))
                     {
-                        throw new Xapp_Util_Exception_Storage(xapp_sprintf(_("storage file: %s is not writable"), $this->_storage), 1640102);
+                        throw new Xapp_Util_Exception_Storage(xapp_sprintf(__("storage file: %s is not writable"), $this->_storage), 1640102);
                     }
                     if(($container = file_get_contents($this->_storage)) !== false)
                     {
@@ -88,7 +88,7 @@ class Xapp_Util_Storage extends Xapp_Util_Container
                             }
                             if($container === null || $container === false)
                             {
-                                throw new Xapp_Util_Exception_Storage(_("unable to decode stored data"), 1640103);
+                                throw new Xapp_Util_Exception_Storage(__("unable to decode stored data"), 1640103);
                             }
                         }
                         if(!empty($container))
@@ -98,18 +98,18 @@ class Xapp_Util_Storage extends Xapp_Util_Container
                             parent::__construct($input);
                         }
                     }else{
-                        throw new Xapp_Util_Exception_Storage(_("unable to read storage from file"), 1640104);
+                        throw new Xapp_Util_Exception_Storage(__("unable to read storage from file"), 1640104);
                     }
                 }else{
                     if(!is_writeable(dirname($this->_storage)))
                     {
-                        throw new Xapp_Util_Exception_Storage(xapp_sprintf(_("storage directory: %s is not writable"), $this->_storage), 1640101);
+                        throw new Xapp_Util_Exception_Storage(xapp_sprintf(__("storage directory: %s is not writable"), $this->_storage), 1640101);
                     }
                     parent::__construct($input);
                 }
             }
         }else{
-            throw new Xapp_Util_Exception_Storage(xapp_sprintf(_("storage type: %s is not supported"), $type), 1640105);
+            throw new Xapp_Util_Exception_Storage(xapp_sprintf(__("storage type: %s is not supported"), $type), 1640105);
         }
     }
 
@@ -165,7 +165,7 @@ class Xapp_Util_Storage extends Xapp_Util_Container
         }
         if($return === false)
         {
-            throw new Xapp_Util_Exception_Storage(_("unable to save to storage"), 1640401);
+            throw new Xapp_Util_Exception_Storage(__("unable to save to storage"), 1640401);
         }
     }
 
@@ -182,7 +182,7 @@ class Xapp_Util_Storage extends Xapp_Util_Container
         $this->exchangeArray(array());
         if(!file_put_contents($this->_storage, "", LOCK_EX))
         {
-            throw new Xapp_Util_Exception_Storage(_("unable to flush storage"), 1640501);
+            throw new Xapp_Util_Exception_Storage(__("unable to flush storage"), 1640501);
         }
     }
 
@@ -198,7 +198,7 @@ class Xapp_Util_Storage extends Xapp_Util_Container
     {
         if(!unlink($this->_storage))
         {
-            throw new Xapp_Util_Exception_Storage(_("unable to delete storage file"), 1640601);
+            throw new Xapp_Util_Exception_Storage(__("unable to delete storage file"), 1640601);
         }
     }
 

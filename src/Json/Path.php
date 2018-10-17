@@ -39,7 +39,7 @@ class Xapp_Util_Json_Path extends Xapp_Util_Std_Path
         }else if(is_array($object)){
             $this->object = new Xapp_Util_Json_Query($object);
         }else{
-            throw new Xapp_Util_Json_Exception(_("first argument is not a valid object"), 1730101);
+            throw new Xapp_Util_Json_Exception(__("first argument is not a valid object"), 1730101);
         }
     }
 }

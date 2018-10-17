@@ -50,7 +50,7 @@ class Xapp_Util_Json_Query extends Xapp_Util_Std_Query
         }else if(is_string($mixed) || is_object($mixed)){
             return new self($mixed, $options);
         }else{
-            throw new Xapp_Util_Json_Exception(_("first argument is not a valid json string or object"), 1680201);
+            throw new Xapp_Util_Json_Exception(__("first argument is not a valid json string or object"), 1680201);
         }
     }
 }

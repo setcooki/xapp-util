@@ -401,7 +401,7 @@ class Xapp_Util_Json_Mapper
         }else if(is_string($mixed) && xapp_is('file', $mixed)){
             if(($mixed = file_get_contents($file = $mixed)) === false)
             {
-                throw new Xapp_Util_Json_Exception(xapp_sprintf(_("unable to add object from file: %s"), $file), 1720301);
+                throw new Xapp_Util_Json_Exception(xapp_sprintf(__("unable to add object from file: %s"), $file), 1720301);
             }
         }
 
@@ -634,7 +634,7 @@ class Xapp_Util_Json_Mapper
         {
             $this->_customActions[trim((string)$action)] = $callback;
         }else{
-            throw new Xapp_Util_Json_Exception(xapp_sprintf(_("callback for custom action: %s is not a valid callback"), $action), 1720901);
+            throw new Xapp_Util_Json_Exception(xapp_sprintf(__("callback for custom action: %s is not a valid callback"), $action), 1720901);
         }
 
         return $this;
@@ -820,7 +820,7 @@ class Xapp_Util_Json_Mapper
                     {
                         if(($map = file_get_contents($file = $map)) === false)
                         {
-                            throw new Xapp_Util_Json_Exception(xapp_sprintf(_("unable to load mapping object from file: %s"), $file), 1721502);
+                            throw new Xapp_Util_Json_Exception(xapp_sprintf(__("unable to load mapping object from file: %s"), $file), 1721502);
                         }
                     }
                     if(Xapp_Util_Json::isJson($map))
@@ -838,7 +838,7 @@ class Xapp_Util_Json_Mapper
                 }else if(is_string($map)){
                     return $this->execute($map, '');
                 }else{
-                    throw new Xapp_Util_Json_Exception(_("first argument is not a mappable value"), 1721501);
+                    throw new Xapp_Util_Json_Exception(__("first argument is not a mappable value"), 1721501);
                 }
                 $this->compile($this->map->object());
                 if((bool)$encode)
@@ -977,7 +977,7 @@ class Xapp_Util_Json_Mapper
                 {
                     $this->action($m[1], $m[2], $value, $path);
                 }else{
-                    throw new Xapp_Util_Json_Exception(xapp_sprintf(_("action: %s is not a registered or internal action"), $m[1]), 1721901);
+                    throw new Xapp_Util_Json_Exception(xapp_sprintf(__("action: %s is not a registered or internal action"), $m[1]), 1721901);
                 }
             }
         }
@@ -1112,7 +1112,7 @@ class Xapp_Util_Json_Mapper
                         {
                             $param = $result[((int)substr($param, 1) - 1)];
                         }else{
-                            throw new Xapp_Util_Json_Exception(_("out of range for variable matching for callback"), 1722101);
+                            throw new Xapp_Util_Json_Exception(__("out of range for variable matching for callback"), 1722101);
                         }
                     }else{
                         $param = $result[0];
@@ -1173,7 +1173,7 @@ class Xapp_Util_Json_Mapper
                             $value = $this->invoke($params[0], array($path, &$this));
                         }
                     }else{
-                        throw new Xapp_Util_Json_Exception(xapp_sprintf(_("action: call and callback: %s is not a registered or valid callback"), $params[0]), 1722201);
+                        throw new Xapp_Util_Json_Exception(xapp_sprintf(__("action: call and callback: %s is not a registered or valid callback"), $params[0]), 1722201);
                     }
                 }
                 break;
@@ -1250,7 +1250,7 @@ class Xapp_Util_Json_Mapper
                             throw new $params[0]($params[1], (($params[2]) ? (int)$params[2] : 0));
                         }
                     }else{
-                        throw new Xapp_Util_Json_Exception(_("action: throw - first parameter must be instance of Exception"));
+                        throw new Xapp_Util_Json_Exception(__("action: throw - first parameter must be instance of Exception"));
                     }
                 }else{
                     if(xapp_is_option(self::CUSTOM_EXCEPTION, $class) && ($e = xapp_get_option(self::CUSTOM_EXCEPTION, $class)) !== null)
@@ -1416,7 +1416,7 @@ class Xapp_Util_Json_Mapper
             }
             catch(ReflectionException $e)
             {
-                throw new Xapp_Util_Json_Exception(xapp_sprintf(_("unable to invoke callback due to reflection error: %s"), $e->getMessage()), 1722301);
+                throw new Xapp_Util_Json_Exception(xapp_sprintf(__("unable to invoke callback due to reflection error: %s"), $e->getMessage()), 1722301);
             }
         }else{
             return call_user_func_array($callback, (array)$params);

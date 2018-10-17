@@ -59,7 +59,7 @@ class Xapp_Util_Std extends stdClass
             }
             return $this;
         }else{
-            throw new Xapp_Util_Std_Exception(_("passed object is not an object"), 1660301);
+            throw new Xapp_Util_Std_Exception(__("passed object is not an object"), 1660301);
         }
     }
 
@@ -80,7 +80,7 @@ class Xapp_Util_Std extends stdClass
             $this->extend($object);
             return $this;
         }else{
-            throw new Xapp_Util_Std_Exception(_("passed object is not an object"), 1660302);
+            throw new Xapp_Util_Std_Exception(__("passed object is not an object"), 1660302);
         }
     }
 

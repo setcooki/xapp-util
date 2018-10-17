@@ -203,7 +203,7 @@ class Xapp_Util_Std_Path
         }else if(is_object($object) || is_array($object)){
             $this->object = new Xapp_Util_Std_Query($object);
         }else{
-            throw new Xapp_Util_Std_Exception(_("first argument is not a valid object"), 1710101);
+            throw new Xapp_Util_Std_Exception(__("first argument is not a valid object"), 1710101);
         }
     }
 
@@ -398,7 +398,7 @@ class Xapp_Util_Std_Path
                 {
                     if(is_array($callbacks) && !in_array(trim($m[1]), $callbacks))
                     {
-                        throw new Xapp_Util_Std_Exception(xapp_sprintf(_("callback: %s is not a allowed callback"), $m[1]), 1710601);
+                        throw new Xapp_Util_Std_Exception(xapp_sprintf(__("callback: %s is not a allowed callback"), $m[1]), 1710601);
                     }
                     if(array_key_exists(3, $m) && !empty($m[3]))
                     {
@@ -435,7 +435,7 @@ class Xapp_Util_Std_Path
                             }
                             catch(ReflectionException $e)
                             {
-                                throw new Xapp_Util_Std_Exception(xapp_sprintf(_("unable to call callback: %s due to reflection error: %s"), $m[1], $e->getMessage()), 1710602);
+                                throw new Xapp_Util_Std_Exception(xapp_sprintf(__("unable to call callback: %s due to reflection error: %s"), $m[1], $e->getMessage()), 1710602);
                             }
                         }
                         break;

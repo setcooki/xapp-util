@@ -297,7 +297,7 @@ class Xapp_Util_Std_Store
             }
             catch(Exception $e){}
         }else{
-            throw new Xapp_Util_Std_Exception(xapp_sprintf(_("passed callback in first argument is not a valid callback")), 1703601);
+            throw new Xapp_Util_Std_Exception(xapp_sprintf(__("passed callback in first argument is not a valid callback")), 1703601);
         }
     }
 
@@ -659,7 +659,7 @@ class Xapp_Util_Std_Store
             }
             $this->remove($mixed1);
         }else{
-            throw new Xapp_Util_Std_Exception(_("merging values at paths only allowed for values of same type"), 1701701);
+            throw new Xapp_Util_Std_Exception(__("merging values at paths only allowed for values of same type"), 1701701);
         }
     }
 
@@ -878,7 +878,7 @@ class Xapp_Util_Std_Store
             if($parent === null && in_array($extend, array(-1, 0, false), true))
             {
                 if($exception){
-                    throw new Xapp_Result_Exception(_("no result found for query/path"), 1702102);
+                    throw new Xapp_Result_Exception(__("no result found for query/path"), 1702102);
                 }else{
                     return xapp_default($default);
                 }
@@ -937,7 +937,7 @@ class Xapp_Util_Std_Store
                     }else{
                         if($typesafe && xapp_type($parent) !== xapp_type($value))
                         {
-                            throw new Xapp_Util_Std_Exception(_("value found at path can not be overwritten due to typesafe protection"), 1702101);
+                            throw new Xapp_Util_Std_Exception(__("value found at path can not be overwritten due to typesafe protection"), 1702101);
                         }
                         $parent = $value;
                     }
@@ -962,7 +962,7 @@ class Xapp_Util_Std_Store
                 self::extend($object, $mixed, $value);
             }else{
                 if($exception){
-                    throw new Xapp_Result_Exception(_("no result found for query/path"), 1702102);
+                    throw new Xapp_Result_Exception(__("no result found for query/path"), 1702102);
                 }else{
                     return xapp_default($default);
                 }
@@ -1099,7 +1099,7 @@ class Xapp_Util_Std_Store
                     }
                     return $value;
                 default:
-                    throw new Xapp_Util_Std_Exception(xapp_sprintf(_("decode algorithm: %s is not supported"), $algo), 1702201);
+                    throw new Xapp_Util_Std_Exception(xapp_sprintf(__("decode algorithm: %s is not supported"), $algo), 1702201);
             }
         }else{
             if(is_string($value) && self::serialized($value))
@@ -1150,7 +1150,7 @@ class Xapp_Util_Std_Store
                     }
                     return convert_uuencode($value);
                 default:
-                    throw new Xapp_Util_Std_Exception(xapp_sprintf(_("encode algorithm: %s is not supported"), $algo), 1702301);
+                    throw new Xapp_Util_Std_Exception(xapp_sprintf(__("encode algorithm: %s is not supported"), $algo), 1702301);
             }
         }else{
             if($value !== false)
@@ -1265,7 +1265,7 @@ class Xapp_Util_Std_Store
             }
             if(!in_array($algo, hash_algos()))
             {
-                throw new Xapp_Util_Std_Exception(xapp_sprintf(_("algo: %s is not supported"), $algo), 1704605);
+                throw new Xapp_Util_Std_Exception(xapp_sprintf(__("algo: %s is not supported"), $algo), 1704605);
             }
             if((bool)$encrypt)
             {
@@ -1274,7 +1274,7 @@ class Xapp_Util_Std_Store
                 {
                     return base64_encode($object);
                 }else{
-                    throw new Xapp_Util_Std_Exception(_("unable to encrypt object due to invalid parameters"), 1704603);
+                    throw new Xapp_Util_Std_Exception(__("unable to encrypt object due to invalid parameters"), 1704603);
                 }
             }else{
                 $object = openssl_decrypt(base64_decode($object), $cipher, hash($algo, $key, false), 0, hash($algo, hash($algo, $key, false)));
@@ -1285,10 +1285,10 @@ class Xapp_Util_Std_Store
                     {
                         return unserialize($object);
                     }else{
-                        throw new Xapp_Util_Std_Exception(_("unable to decrypt object with key"), 1704602);
+                        throw new Xapp_Util_Std_Exception(__("unable to decrypt object with key"), 1704602);
                     }
                 }else{
-                    throw new Xapp_Util_Std_Exception(_("unable to decrypt object due to invalid parameters"), 1704601);
+                    throw new Xapp_Util_Std_Exception(__("unable to decrypt object due to invalid parameters"), 1704601);
                 }
             }
         }else{
@@ -1418,18 +1418,18 @@ class Xapp_Util_Std_Store
                 case 'stream':
                     if(!fwrite($mixed, $object))
                     {
-                        throw new Xapp_Util_Std_Exception(_("unable to save to stream"), 1702603);
+                        throw new Xapp_Util_Std_Exception(__("unable to save to stream"), 1702603);
                     }
                     break;
                 default:
-                    throw new Xapp_Util_Std_Exception(xapp_sprintf(_("resource type: %s not supported"), get_resource_type($mixed)), 1702602);
+                    throw new Xapp_Util_Std_Exception(xapp_sprintf(__("resource type: %s not supported"), get_resource_type($mixed)), 1702602);
             }
         }else if(is_callable($mixed)){
             call_user_func_array($mixed, array($object, $key, $this));
         }else{
             if(!file_put_contents((string)$mixed, $object, LOCK_EX))
             {
-                throw new Xapp_Util_Std_Exception(xapp_sprintf(_("unable to save to file: %s"), (string)$mixed), 1702601);
+                throw new Xapp_Util_Std_Exception(xapp_sprintf(__("unable to save to file: %s"), (string)$mixed), 1702601);
             }
         }
         unset($object);
@@ -1480,7 +1480,7 @@ class Xapp_Util_Std_Store
                 {
                     $this->object = $class::decode($mixed);
                 }else{
-                    throw new Xapp_Util_Std_Exception(xapp_sprintf(_("unable to import from file: %s"), $mixed), 1704301);
+                    throw new Xapp_Util_Std_Exception(xapp_sprintf(__("unable to import from file: %s"), $mixed), 1704301);
                 }
             }else{
                 if(is_string($mixed) && self::serialized($mixed))
@@ -1489,7 +1489,7 @@ class Xapp_Util_Std_Store
                 }else if(is_string($mixed) && strpos($mixed, '.') !== false && is_writeable(dirname($mixed))){
                     $this->_file = $mixed;
                 }else{
-                    throw new Xapp_Util_Std_Exception(_("import parameter is not a valid object, serialized object or file path/dir"), 1704302);
+                    throw new Xapp_Util_Std_Exception(__("import parameter is not a valid object, serialized object or file path/dir"), 1704302);
                 }
             }
         }

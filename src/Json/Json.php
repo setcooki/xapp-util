@@ -31,7 +31,7 @@ class Xapp_Util_Json
         {
             return json_encode($value, $options);
         }else{
-            throw new Xapp_Util_Json_Exception(_("function json_encode not supported by system"), 1650101);
+            throw new Xapp_Util_Json_Exception(__("function json_encode not supported by system"), 1650101);
         }
     }
 
@@ -59,7 +59,7 @@ class Xapp_Util_Json
                 return json_decode($json, $assoc, $depth);
             }
         }else{
-            throw new Xapp_Util_Json_Exception(_("function json_decode not supported by system"), 1650201);
+            throw new Xapp_Util_Json_Exception(__("function json_decode not supported by system"), 1650201);
         }
     }
 
@@ -89,7 +89,7 @@ class Xapp_Util_Json
                 return self::decode($json, $assoc, $depth, $options);
             }
         }
-        throw new Xapp_Util_Json_Exception(_("input argument 1 is not a decodable json value"), 1650701);
+        throw new Xapp_Util_Json_Exception(__("input argument 1 is not a decodable json value"), 1650701);
     }
 
 

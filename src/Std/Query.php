@@ -205,7 +205,7 @@ class Xapp_Util_Std_Query implements Iterator
             }
             $this->_object =& $object;
         }else{
-            throw new Xapp_Util_Std_Exception(_("value passed as first argument must be of type std object or array"), 1670101);
+            throw new Xapp_Util_Std_Exception(__("value passed as first argument must be of type std object or array"), 1670101);
         }
     }
 
@@ -272,7 +272,7 @@ class Xapp_Util_Std_Query implements Iterator
                 }
                 $this->_object =& $object;
             }else{
-                throw new Xapp_Util_Std_Exception(_("value passed as first argument must be of type std object or array"), 1671901);
+                throw new Xapp_Util_Std_Exception(__("value passed as first argument must be of type std object or array"), 1671901);
             }
         }
         if(!xapp_get_option(self::RETURN_AS_REFERENCE, $class))
@@ -391,7 +391,7 @@ class Xapp_Util_Std_Query implements Iterator
         {
             return $this->get(0);
         }else{
-            throw new Xapp_Util_Std_Exception(xapp_sprintf(_("method: %s used in wrong context"), __FUNCTION__), 1670601);
+            throw new Xapp_Util_Std_Exception(xapp_sprintf(__("method: %s used in wrong context"), __FUNCTION__), 1670601);
         }
     }
 
@@ -411,7 +411,7 @@ class Xapp_Util_Std_Query implements Iterator
         {
             return $this->get(-1);
         }else{
-            throw new Xapp_Util_Std_Exception(xapp_sprintf(_("method: %s used in wrong context"), __FUNCTION__), 1670701);
+            throw new Xapp_Util_Std_Exception(xapp_sprintf(__("method: %s used in wrong context"), __FUNCTION__), 1670701);
         }
     }
 
@@ -433,7 +433,7 @@ class Xapp_Util_Std_Query implements Iterator
         {
             return self::filter($this->init(), $index);
         }else{
-            throw new Xapp_Util_Std_Exception(xapp_sprintf(_("method: %s used in wrong context"), __FUNCTION__), 1670801);
+            throw new Xapp_Util_Std_Exception(xapp_sprintf(__("method: %s used in wrong context"), __FUNCTION__), 1670801);
         }
     }
 
@@ -653,7 +653,7 @@ class Xapp_Util_Std_Query implements Iterator
                     {
                         if(xapp_get_option(self::THROW_EXCEPTION, $class))
                         {
-                            throw new Xapp_Result_Exception(xapp_sprintf(_("no result found for query: %s"), $path), 1671501);
+                            throw new Xapp_Result_Exception(xapp_sprintf(__("no result found for query: %s"), $path), 1671501);
                         }else{
                             return xapp_default($default);
                         }
@@ -679,7 +679,7 @@ class Xapp_Util_Std_Query implements Iterator
                     }else{
                         if(xapp_get_option(self::THROW_EXCEPTION, $class))
                         {
-                            throw new Xapp_Result_Exception(xapp_sprintf(_("no result found for query: %s"), $path), 1671501);
+                            throw new Xapp_Result_Exception(xapp_sprintf(__("no result found for query: %s"), $path), 1671501);
                         }else{
                             return xapp_default($default);
                         }
@@ -689,7 +689,7 @@ class Xapp_Util_Std_Query implements Iterator
         }
         if(xapp_get_option(self::THROW_EXCEPTION, $class))
         {
-            throw new Xapp_Result_Exception(xapp_sprintf(_("no result found for query: %s"), $path), 1671501);
+            throw new Xapp_Result_Exception(xapp_sprintf(__("no result found for query: %s"), $path), 1671501);
         }else{
             return xapp_default($default);
         }
@@ -758,7 +758,7 @@ class Xapp_Util_Std_Query implements Iterator
         }else if($object === '__FALSE__'){
             if($default === false && xapp_get_option(self::THROW_EXCEPTION, $class))
             {
-                throw new Xapp_Result_Exception(xapp_sprintf(_("no result found for path: %s"), $path), 1671401);
+                throw new Xapp_Result_Exception(xapp_sprintf(__("no result found for path: %s"), $path), 1671401);
             }else{
                 return xapp_default($default);
             }
@@ -1188,9 +1188,9 @@ class Xapp_Util_Std_Query implements Iterator
                 }else{
                     if(is_string($filter))
                     {
-                        throw new Xapp_Util_Std_Exception(xapp_sprintf(_("passed filter: %s is not a recognized filter or callable"), $filter), 1672103);
+                        throw new Xapp_Util_Std_Exception(xapp_sprintf(__("passed filter: %s is not a recognized filter or callable"), $filter), 1672103);
                     }else{
-                        throw new Xapp_Util_Std_Exception(_("passed filter callable is not a recognized filter or callable"), 1672102);
+                        throw new Xapp_Util_Std_Exception(__("passed filter callable is not a recognized filter or callable"), 1672102);
                     }
                 }
             }
@@ -1221,7 +1221,7 @@ class Xapp_Util_Std_Query implements Iterator
             }else{
                 if(xapp_get_option(self::THROW_EXCEPTION, $class))
                 {
-                    throw new Xapp_Result_Exception(_("no object(s) found for filter"), 1672101);
+                    throw new Xapp_Result_Exception(__("no object(s) found for filter"), 1672101);
                 }else{
                     return xapp_default($default);
                 }
@@ -1531,7 +1531,7 @@ class Xapp_Util_Std_Query implements Iterator
         {
             if($callbacks === false)
             {
-                throw new Xapp_Util_Std_Exception(xapp_sprintf(_("no callbacks allowed as filter argument"), $callback), 1672502);
+                throw new Xapp_Util_Std_Exception(xapp_sprintf(__("no callbacks allowed as filter argument"), $callback), 1672502);
             }
             if(is_array($callbacks))
             {
@@ -1550,7 +1550,7 @@ class Xapp_Util_Std_Query implements Iterator
                 }
                 if(!is_null($callback))
                 {
-                    throw new Xapp_Util_Std_Exception(xapp_sprintf(_("callback: %s is a valid but not allowed callback"), $callback), 1672501);
+                    throw new Xapp_Util_Std_Exception(xapp_sprintf(__("callback: %s is a valid but not allowed callback"), $callback), 1672501);
                 }
             }
             unset($callback);
@@ -1585,16 +1585,16 @@ class Xapp_Util_Std_Query implements Iterator
                     $class  = new ReflectionClass($callable[0]);
                     if($class->isAbstract())
                     {
-                        throw new Xapp_Util_Std_Exception(xapp_sprintf(_("unable to invoke class since class: %s is abstract"), $class->name), 1672605);
+                        throw new Xapp_Util_Std_Exception(xapp_sprintf(__("unable to invoke class since class: %s is abstract"), $class->name), 1672605);
                     }
                     $method = $class->getMethod($callable[1]);
                     if(!$method->isPublic())
                     {
-                        throw new Xapp_Util_Std_Exception(xapp_sprintf(_("unable to invoke class method since method: %s is not public"), $method->name), 1672604);
+                        throw new Xapp_Util_Std_Exception(xapp_sprintf(__("unable to invoke class method since method: %s is not public"), $method->name), 1672604);
                     }
                     if($method->isAbstract())
                     {
-                        throw new Xapp_Util_Std_Exception(xapp_sprintf(_("unable to invoke class method since method: %s is abstract"), $method->name), 1672603);
+                        throw new Xapp_Util_Std_Exception(xapp_sprintf(__("unable to invoke class method since method: %s is abstract"), $method->name), 1672603);
                     }
                     if($method->isStatic())
                     {
@@ -1610,11 +1610,11 @@ class Xapp_Util_Std_Query implements Iterator
                 }
                 catch(ReflectionException $e)
                 {
-                    throw new Xapp_Util_Std_Exception(xapp_sprintf(_("unable to call callback: %s due to reflection error: %s"), ((is_object($callable[0])) ? get_class($callable[0]) : $callable[0]) . '::' . $callable[1], $e->getMessage()), 1710602);
+                    throw new Xapp_Util_Std_Exception(xapp_sprintf(__("unable to call callback: %s due to reflection error: %s"), ((is_object($callable[0])) ? get_class($callable[0]) : $callable[0]) . '::' . $callable[1], $e->getMessage()), 1710602);
                 }
             }
         }else{
-            throw new Xapp_Util_Std_Exception(_("passed callable is not a callable"), 1672601);
+            throw new Xapp_Util_Std_Exception(__("passed callable is not a callable"), 1672601);
         }
     }
 
